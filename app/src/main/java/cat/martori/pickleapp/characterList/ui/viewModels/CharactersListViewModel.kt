@@ -5,7 +5,7 @@ import cat.martori.pickleapp.characterList.domain.Character
 import cat.martori.pickleapp.characterList.domain.Status
 import cat.martori.pickleapp.characterList.ui.models.toCharacterItemModel
 
-class CharacterListViewModel : ViewModel() {
+class CharactersListViewModel : ViewModel() {
 
     val characters =
         listOf(

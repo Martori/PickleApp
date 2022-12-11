@@ -18,13 +18,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
 import cat.martori.pickleapp.characterList.ui.models.CharacterItemModel
-import cat.martori.pickleapp.characterList.ui.viewModels.CharacterListViewModel
+import cat.martori.pickleapp.characterList.ui.viewModels.CharactersListViewModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CharacterList(viewModel: CharacterListViewModel = koinViewModel()) {
+fun CharacterList(viewModel: CharactersListViewModel = koinViewModel()) {
     CharacterList(characters = viewModel.characters)
 }
 
