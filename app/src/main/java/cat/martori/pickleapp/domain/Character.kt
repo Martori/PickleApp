@@ -1,5 +1,7 @@
 package cat.martori.pickleapp.domain
 
+import com.google.gson.annotations.SerializedName
+
 
 class Character(
     val name: String,
@@ -9,7 +11,12 @@ class Character(
 )
 
 enum class Status {
-    ALive,
+    @SerializedName("Alive")
+    Alive,
+
+    @SerializedName("Dead")
     Dead,
+
+    @SerializedName("unknown")
     Unknown,
 }

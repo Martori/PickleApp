@@ -2,6 +2,7 @@ package cat.martori.pickleapp
 
 import android.app.Application
 import cat.martori.pickleapp.data.di.dataModule
+import cat.martori.pickleapp.domain.di.domainModule
 import cat.martori.pickleapp.ui.di.uiModule
 import coil.ImageLoader
 import coil.ImageLoaderFactory
@@ -19,7 +20,7 @@ class PickleApp : Application(), ImageLoaderFactory {
         startKoin {
             androidLogger()
             androidContext(this@PickleApp)
-            modules(uiModule + dataModule)
+            modules(domainModule + uiModule + dataModule)
         }
     }
 

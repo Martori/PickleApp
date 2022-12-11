@@ -16,7 +16,7 @@ fun Character.toCharacterItemModel() = CharacterItemModel(
     species,
     imageUrl,
     when (status) {
-        Status.ALive -> Color.Green
+        Status.Alive -> Color.Green
         Status.Dead -> Color.Red
         Status.Unknown -> Color.LightGray
     }

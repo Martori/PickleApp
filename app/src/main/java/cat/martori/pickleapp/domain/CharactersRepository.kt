@@ -1,5 +1,8 @@
 package cat.martori.pickleapp.domain
 
-interface CharactersRepository {
+import kotlinx.coroutines.flow.Flow
 
+interface CharactersRepository {
+    fun getAllCharactersList(): Flow<Result<List<Character>>>
+    suspend fun requestCharacters()
 }
