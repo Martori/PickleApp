@@ -1,10 +1,11 @@
-package cat.martori.pickleapp.di
+package cat.martori.pickleapp.ui.di
 
 import cat.martori.pickleapp.ui.viewModels.CharactersListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val characterListModule = module {
+
+val uiModule = module {
     viewModel {
         CharactersListViewModel()
     }
