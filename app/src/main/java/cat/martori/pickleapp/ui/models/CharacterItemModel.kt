@@ -1,8 +1,8 @@
-package cat.martori.pickleapp.characterList.ui.models
+package cat.martori.pickleapp.ui.models
 
 import androidx.compose.ui.graphics.Color
-import cat.martori.pickleapp.characterList.domain.Character
-import cat.martori.pickleapp.characterList.domain.Status
+import cat.martori.pickleapp.domain.Character
+import cat.martori.pickleapp.domain.Status
 
 data class CharacterItemModel(
     val name: String,

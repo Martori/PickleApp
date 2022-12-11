@@ -1,4 +1,4 @@
-package cat.martori.pickleapp.characterList.ui.composables
+package cat.martori.pickleapp.ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,9 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
-import cat.martori.pickleapp.characterList.ui.models.CharacterItemModel
-import cat.martori.pickleapp.characterList.ui.viewModels.CharactersListViewModel
+import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
+import cat.martori.pickleapp.ui.viewModels.CharactersListViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
 

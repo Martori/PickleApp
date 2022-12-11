@@ -1,9 +1,9 @@
-package cat.martori.pickleapp.characterList.ui.viewModels
+package cat.martori.pickleapp.ui.viewModels
 
 import androidx.lifecycle.ViewModel
-import cat.martori.pickleapp.characterList.domain.Character
-import cat.martori.pickleapp.characterList.domain.Status
-import cat.martori.pickleapp.characterList.ui.models.toCharacterItemModel
+import cat.martori.pickleapp.domain.Character
+import cat.martori.pickleapp.domain.Status
+import cat.martori.pickleapp.ui.models.toCharacterItemModel
 
 class CharactersListViewModel : ViewModel() {
 

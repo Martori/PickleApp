@@ -1,6 +1,6 @@
-package cat.martori.pickleapp.characterList.di
+package cat.martori.pickleapp.di
 
-import cat.martori.pickleapp.characterList.ui.viewModels.CharactersListViewModel
+import cat.martori.pickleapp.ui.viewModels.CharactersListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

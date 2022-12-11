@@ -1,7 +1,7 @@
 package cat.martori.pickleapp
 
 import android.app.Application
-import cat.martori.pickleapp.characterList.di.characterListModule
+import cat.martori.pickleapp.di.characterListModule
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
