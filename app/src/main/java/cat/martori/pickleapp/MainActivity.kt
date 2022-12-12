@@ -3,7 +3,7 @@ package cat.martori.pickleapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import cat.martori.pickleapp.ui.composables.CharacterList
+import cat.martori.pickleapp.ui.composables.CharacterListScreen
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PickleAppTheme {
-                CharacterList()
+                CharacterListScreen()
             }
         }
     }

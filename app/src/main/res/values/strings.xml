@@ -3,5 +3,6 @@
 
     <string name="defaultErrorMessage">Sorry an unexpected Error occurred</string>
     <string name="acceptButton">OK</string>
+    <string name="mainLogoDescription">Rick and Morty logo</string>
 
 </resources>
