@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">PickleApp</string>
 
-    <string name="defaultErrorMessage">Sorry an unexpected Error occurred</string>
+    <string name="defaultErrorMessageTitle">Whoopsie-Daisy</string>
+    <string name="defaultErrorMessage">"Oops, I did it again. I made a mistake and caused an error, Morty. Better fix it before it's too late!"</string>
     <string name="acceptButton">OK</string>
     <string name="mainLogoDescription">Rick and Morty logo</string>
 

@@ -97,7 +97,8 @@ private fun ErrorDialog(errorMessage: String, dismissError: () -> Unit) {
                 .background(MaterialTheme.colors.background)
                 .padding(12.dp)
         ) {
-            Text(text = errorMessage, style = MaterialTheme.typography.h5)
+            Text(text = stringResource(R.string.defaultErrorMessageTitle), style = MaterialTheme.typography.h6)
+            Text(text = errorMessage, style = MaterialTheme.typography.body1)
             TextButton(modifier = Modifier.align(Alignment.End), onClick = { dismissError() }) {
                 Text(text = stringResource(R.string.acceptButton))
             }
@@ -130,14 +131,14 @@ private fun AvatarWithState(imageUrl: String, statusColor: Color) {
         AsyncImage(
             imageUrl,
             contentDescription = null,
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .size(64.dp)
                 .clip(CircleShape),
             placeholder = painterResource(id = R.drawable.avatar_placeholder),
             error = painterResource(id = R.drawable.avatar_placeholder)
         )
         Box(
-            modifier = androidx.compose.ui.Modifier
+            modifier = Modifier
                 .size(8.dp)
                 .clip(CircleShape)
                 .background(statusColor)
