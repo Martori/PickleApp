@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -94,19 +91,19 @@ fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmo
 
 @Composable
 private fun CharacterItem(model: CharacterItemModel) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(MaterialTheme.shapes.medium)
-            .background(MaterialTheme.colors.surface)
-            .fillMaxWidth()
-            .padding(12.dp),
-    ) {
-        AvatarWithStatus(model.avatarUrl, model.statusColor)
-        Spacer(modifier = Modifier.size(12.dp))
-        Column {
-            Text(model.name, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.h6)
-            Text(model.species, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.body2)
+    Surface(elevation = 10.dp, shape = MaterialTheme.shapes.medium) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+        ) {
+            AvatarWithStatus(model.avatarUrl, model.statusColor)
+            Spacer(modifier = Modifier.size(12.dp))
+            Column {
+                Text(model.name, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.h6)
+                Text(model.species, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.body2)
+            }
         }
     }
 }
