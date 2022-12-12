@@ -21,3 +21,5 @@ fun Character.toCharacterItemModel() = CharacterItemModel(
         Status.Unknown -> Color.LightGray
     }
 )
+
+fun List<Character>.toCharacterItemModel() = map { it.toCharacterItemModel() }

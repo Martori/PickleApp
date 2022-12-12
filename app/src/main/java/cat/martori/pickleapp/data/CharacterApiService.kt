@@ -2,6 +2,7 @@ package cat.martori.pickleapp.data
 
 import cat.martori.pickleapp.domain.*
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 data class CharactersResponse(
     val results: List<CharacterData>
@@ -22,6 +23,6 @@ class CharacterData(
 interface CharacterApiService {
 
     @GET("/api/character")
-    suspend fun getAllCharacters(): Result<CharactersResponse>
+    suspend fun getAllCharacters(@Query("page") page: Int): Result<CharactersResponse>
 
 }

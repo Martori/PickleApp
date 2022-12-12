@@ -4,6 +4,8 @@ import cat.martori.pickleapp.data.CharacterApiService
 import cat.martori.pickleapp.data.RetrofitCharactersRepository
 import cat.martori.pickleapp.domain.CharactersRepository
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -15,10 +17,13 @@ val dataModule = module {
     singleOf(::RetrofitCharactersRepository).bind<CharactersRepository>()
 
     single {
+        val client = OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }).build()
+
         Retrofit.Builder()
             .baseUrl("https://rickandmortyapi.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(ResultCallAdapterFactory.create())
+            .client(client)
             .build()
     }
 
