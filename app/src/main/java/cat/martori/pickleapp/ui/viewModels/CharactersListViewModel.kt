@@ -2,7 +2,7 @@ package cat.martori.pickleapp.ui.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cat.martori.pickleapp.domain.Character
+import cat.martori.pickleapp.domain.CharacterSummary
 import cat.martori.pickleapp.domain.GetCharactersListUseCase
 import cat.martori.pickleapp.domain.RequestCharactersListUseCase
 import cat.martori.pickleapp.ui.composables.CharactersListState
@@ -38,7 +38,7 @@ class CharactersListViewModel(
             }
             .stateIn(viewModelScope, SharingStarted.Lazily, CharactersListState.DEFAULT)
 
-    private fun foldState(state: CharactersListState, result: Result<List<Character>>) =
+    private fun foldState(state: CharactersListState, result: Result<List<CharacterSummary>>) =
         state.copy(characters = result.map { it.toCharacterItemModel() }.getOrElse { state.characters }, error = result.exceptionOrNull())
 
     private suspend fun processAction(it: CharacterListAction) = when (it) {

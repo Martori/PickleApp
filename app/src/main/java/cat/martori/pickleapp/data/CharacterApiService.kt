@@ -14,7 +14,7 @@ class CharacterData(
     val image: String,
     val status: Status
 ) {
-    fun toDomain() = Character(
+    fun toDomain() = CharacterSummary(
         name, species, image, status
     )
 }

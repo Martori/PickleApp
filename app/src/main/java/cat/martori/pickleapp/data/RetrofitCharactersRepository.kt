@@ -1,6 +1,6 @@
 package cat.martori.pickleapp.data
 
-import cat.martori.pickleapp.domain.Character
+import cat.martori.pickleapp.domain.CharacterSummary
 import cat.martori.pickleapp.domain.CharactersRepository
 import cat.martori.pickleapp.domain.flatMap
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +10,9 @@ private const val NETWORK_PAGE_SIZE = 20
 
 class RetrofitCharactersRepository(private val characterApiService: CharacterApiService) : CharactersRepository {
 
-    private val characters = MutableStateFlow(Result.success(emptyList<Character>()))
+    private val characters = MutableStateFlow(Result.success(emptyList<CharacterSummary>()))
 
-    override fun getAllCharactersList(): Flow<Result<List<Character>>> = characters
+    override fun getAllCharactersList(): Flow<Result<List<CharacterSummary>>> = characters
 
     override suspend fun requestCharacters(currentAmount: Int) {
         val nextPage = computeNextPage(currentAmount)

@@ -3,7 +3,7 @@ package cat.martori.pickleapp.domain
 import com.google.gson.annotations.SerializedName
 
 
-class Character(
+class CharacterSummary(
     val name: String,
     val species: String,
     val imageUrl: String,
