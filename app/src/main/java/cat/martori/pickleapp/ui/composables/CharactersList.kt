@@ -2,6 +2,7 @@ package cat.martori.pickleapp.ui.composables
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -32,7 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CharacterListScreen(viewModel: CharactersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
-    CharacterListScreen(state, { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }, { viewModel.act(CharacterListAction.DismissError) })
+    CharacterListScreen(state, { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }, { viewModel.act(CharacterListAction.DismissError) }, {})
 }
 
 data class CharactersListState(
@@ -46,7 +47,7 @@ data class CharactersListState(
 }
 
 @Composable
-fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit, dismissError: () -> Unit) {
+fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit, dismissError: () -> Unit, openCharacterDetails: (CharacterItemModel) -> Unit) {
     Scaffold(topBar = {
         TopAppBar {
             Image(modifier = Modifier.padding(8.dp), painter = painterResource(R.drawable.main_logo), contentDescription = stringResource(R.string.mainLogoDescription))
@@ -66,7 +67,7 @@ fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (curr
                         requestMoreCharacters(state.characters.size)
                     }
                 }
-                CharacterItem(item)
+                CharacterItem(item) { openCharacterDetails(item) }
             }
             if (state.loading) {
                 item {
@@ -105,15 +106,15 @@ private fun ErrorDialog(errorMessage: String, dismissError: () -> Unit) {
 }
 
 @Composable
-private fun CharacterItem(model: CharacterItemModel) {
-    Surface(elevation = 4.dp, shape = MaterialTheme.shapes.medium) {
+private fun CharacterItem(model: CharacterItemModel, onClick: () -> Unit) {
+    Surface(elevation = 4.dp, shape = MaterialTheme.shapes.medium, modifier = Modifier.clickable { onClick() }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
         ) {
-            AvatarWithStatus(model.avatarUrl, model.statusColor)
+            AvatarWithState(model.avatarUrl, model.statusColor)
             Spacer(modifier = Modifier.size(12.dp))
             Column {
                 Text(model.name, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.h6)
@@ -124,7 +125,7 @@ private fun CharacterItem(model: CharacterItemModel) {
 }
 
 @Composable
-private fun AvatarWithStatus(imageUrl: String, statusColor: Color) {
+private fun AvatarWithState(imageUrl: String, statusColor: Color) {
     Box {
         AsyncImage(
             imageUrl,
@@ -149,7 +150,7 @@ private fun AvatarWithStatus(imageUrl: String, statusColor: Color) {
 @Composable
 fun AvatarWithStatePreview() {
     PickleAppTheme {
-        AvatarWithStatus("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
+        AvatarWithState("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
     }
 }
 
@@ -159,7 +160,7 @@ fun CharacterItemPreview() {
     PickleAppTheme {
         CharacterItem(
             CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
-        )
+        ) { }
     }
 }
 
@@ -177,6 +178,6 @@ fun CharacterListPreview() {
                 ),
                 null,
                 false
-            ), { }, {})
+            ), { }, {}, {})
     }
 }
