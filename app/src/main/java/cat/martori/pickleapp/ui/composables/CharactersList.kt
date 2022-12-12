@@ -3,11 +3,12 @@ package cat.martori.pickleapp.ui.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
 import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
+import cat.martori.pickleapp.ui.viewModels.CharacterListAction
 import cat.martori.pickleapp.ui.viewModels.CharactersListViewModel
 import coil.compose.AsyncImage
 import org.koin.androidx.compose.koinViewModel
@@ -28,7 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CharacterList(viewModel: CharactersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
-    CharacterList(state)
+    CharacterList(state) { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }
 }
 
 data class CharactersListState(
@@ -42,7 +44,7 @@ data class CharactersListState(
 }
 
 @Composable
-fun CharacterList(state: CharactersListState) {
+fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -50,8 +52,13 @@ fun CharacterList(state: CharactersListState) {
             .background(MaterialTheme.colors.background)
             .fillMaxSize()
     ) {
-        items(state.characters) {
-            CharacterItem(it)
+        itemsIndexed(state.characters) { index, item ->
+            if (index == state.characters.lastIndex && state.loading) {
+                LaunchedEffect(state, index) {
+                    requestMoreCharacters(state.characters.size)
+                }
+            }
+            CharacterItem(item)
         }
         if (state.loading) {
             item {
@@ -135,6 +142,6 @@ fun CharacterListPreview() {
                 null,
                 false
             )
-        )
+        ) { }
     }
 }

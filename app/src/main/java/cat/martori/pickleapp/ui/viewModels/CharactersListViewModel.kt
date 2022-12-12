@@ -2,6 +2,7 @@ package cat.martori.pickleapp.ui.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import cat.martori.pickleapp.domain.Character
 import cat.martori.pickleapp.domain.GetCharactersListUseCase
 import cat.martori.pickleapp.domain.RequestCharactersListUseCase
 import cat.martori.pickleapp.ui.composables.CharactersListState
@@ -28,21 +29,25 @@ class CharactersListViewModel(
 ) : ViewModel() {
 
     private val actions = MutableStateFlow<CharacterListAction>(CharacterListAction.RequestMoreCharters(0))
-        .onEach {
-            when (it) {
-                is CharacterListAction.RequestMoreCharters -> requestCharacters(it.currentAmount)
-                else -> {}
-            }
-        }
 
     val state =
         getCharactersList()
-            .runningFold(CharactersListState.DEFAULT) { state, result ->
-                state.copy(characters = result.map { it.toCharacterItemModel() }.getOrElse { state.characters }, error = result.exceptionOrNull())
-            }
-            .combine(actions) { state, action ->
+            .runningFold(CharactersListState.DEFAULT, ::foldState)
+            .combine(actions.onEach(::processAction)) { state, action ->
                 action.transformState(state)
             }
             .stateIn(viewModelScope, SharingStarted.Lazily, CharactersListState.DEFAULT)
+
+    private fun foldState(state: CharactersListState, result: Result<List<Character>>) =
+        state.copy(characters = result.map { it.toCharacterItemModel() }.getOrElse { state.characters }, error = result.exceptionOrNull())
+
+    private suspend fun processAction(it: CharacterListAction) = when (it) {
+        is CharacterListAction.RequestMoreCharters -> requestCharacters(it.currentAmount)
+        else -> {}
+    }
+
+    fun act(action: CharacterListAction) {
+        actions.value = action
+    }
 
 }

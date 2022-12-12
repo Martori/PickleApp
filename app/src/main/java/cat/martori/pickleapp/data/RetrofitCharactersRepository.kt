@@ -24,6 +24,6 @@ class RetrofitCharactersRepository(private val characterApiService: CharacterApi
         }
     }
 
-    private fun computeNextPage(currentAmount: Int) = ((currentAmount - 1) / NETWORK_PAGE_SIZE) + 1
+    private fun computeNextPage(currentAmount: Int) = (currentAmount / NETWORK_PAGE_SIZE) + 1
 
 }
