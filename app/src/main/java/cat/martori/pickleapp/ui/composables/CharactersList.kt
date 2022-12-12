@@ -91,7 +91,7 @@ fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmo
 
 @Composable
 private fun CharacterItem(model: CharacterItemModel) {
-    Surface(elevation = 10.dp, shape = MaterialTheme.shapes.medium) {
+    Surface(elevation = 4.dp, shape = MaterialTheme.shapes.medium) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
