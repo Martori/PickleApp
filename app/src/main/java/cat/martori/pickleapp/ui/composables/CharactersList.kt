@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -62,7 +63,12 @@ fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmo
         }
         if (state.loading) {
             item {
-                Text(text = "Loading...")
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp)) {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
             }
         }
     }

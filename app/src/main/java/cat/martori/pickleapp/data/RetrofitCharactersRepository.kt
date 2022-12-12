@@ -16,7 +16,6 @@ class RetrofitCharactersRepository(private val characterApiService: CharacterApi
 
     override suspend fun requestCharacters(currentAmount: Int) {
         val nextPage = computeNextPage(currentAmount)
-
         characters.value = characters.value.flatMap { current ->
             characterApiService.getAllCharacters(nextPage).map { response ->
                 current + response.results.map { it.toDomain() }
