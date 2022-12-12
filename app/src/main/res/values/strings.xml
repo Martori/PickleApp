@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PickleApp</string>
+
+    <string name="defaultErrorMessage">Sorry an unexpected Error occurred</string>
+    <string name="acceptButton">OK</string>
+
 </resources>

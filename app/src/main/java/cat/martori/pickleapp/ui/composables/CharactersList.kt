@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -73,17 +74,22 @@ fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmo
         }
     }
     state.error?.let {
-        Dialog(onDismissRequest = { dismissError() }) {
-            Column(
-                Modifier
-                    .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.colors.background)
-                    .padding(12.dp)
-            ) {
-                Text(text = "Sorry an unexpected Error occurred", style = MaterialTheme.typography.h5)
-                TextButton(modifier = Modifier.align(Alignment.End), onClick = { dismissError() }) {
-                    Text(text = "OK")
-                }
+        ErrorDialog(stringResource(R.string.defaultErrorMessage), dismissError)
+    }
+}
+
+@Composable
+private fun ErrorDialog(errorMessage: String, dismissError: () -> Unit) {
+    Dialog(onDismissRequest = { dismissError() }) {
+        Column(
+            Modifier
+                .clip(MaterialTheme.shapes.medium)
+                .background(MaterialTheme.colors.background)
+                .padding(12.dp)
+        ) {
+            Text(text = errorMessage, style = MaterialTheme.typography.h5)
+            TextButton(modifier = Modifier.align(Alignment.End), onClick = { dismissError() }) {
+                Text(text = stringResource(R.string.acceptButton))
             }
         }
     }
