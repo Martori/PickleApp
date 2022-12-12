@@ -27,12 +27,22 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CharacterList(viewModel: CharactersListViewModel = koinViewModel()) {
-    val characters by viewModel.characters.collectAsState()
-    CharacterList(characters)
+    val state by viewModel.state.collectAsState()
+    CharacterList(state)
+}
+
+data class CharactersListState(
+    val characters: List<CharacterItemModel>,
+    val error: Throwable?,
+    val loading: Boolean
+) {
+    companion object {
+        val DEFAULT = CharactersListState(emptyList(), null, true)
+    }
 }
 
 @Composable
-fun CharacterList(characters: List<CharacterItemModel>) {
+fun CharacterList(state: CharactersListState) {
     LazyColumn(
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -40,8 +50,13 @@ fun CharacterList(characters: List<CharacterItemModel>) {
             .background(MaterialTheme.colors.background)
             .fillMaxSize()
     ) {
-        items(characters) {
+        items(state.characters) {
             CharacterItem(it)
+        }
+        if (state.loading) {
+            item {
+                Text(text = "Loading...")
+            }
         }
     }
 }
@@ -56,8 +71,8 @@ private fun CharacterItem(model: CharacterItemModel) {
             .fillMaxWidth()
             .padding(12.dp),
     ) {
-        AvatarWithState(model.avatarUrl, model.statusColor)
-        Spacer(modifier = androidx.compose.ui.Modifier.size(12.dp))
+        AvatarWithStatus(model.avatarUrl, model.statusColor)
+        Spacer(modifier = Modifier.size(12.dp))
         Column {
             Text(model.name, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.h6)
             Text(model.species, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.body2)
@@ -66,7 +81,7 @@ private fun CharacterItem(model: CharacterItemModel) {
 }
 
 @Composable
-private fun AvatarWithState(imageUrl: String, statusColor: Color) {
+private fun AvatarWithStatus(imageUrl: String, statusColor: Color) {
     Box {
         AsyncImage(
             imageUrl,
@@ -74,8 +89,8 @@ private fun AvatarWithState(imageUrl: String, statusColor: Color) {
             modifier = androidx.compose.ui.Modifier
                 .size(64.dp)
                 .clip(CircleShape),
-            placeholder = painterResource(id = R.drawable.ic_launcher_background),
-            error = painterResource(id = R.drawable.ic_launcher_foreground)
+            placeholder = painterResource(id = R.drawable.avatar_placeholder),
+            error = painterResource(id = R.drawable.avatar_placeholder)
         )
         Box(
             modifier = androidx.compose.ui.Modifier
@@ -91,7 +106,7 @@ private fun AvatarWithState(imageUrl: String, statusColor: Color) {
 @Composable
 fun AvatarWithStatePreview() {
     PickleAppTheme {
-        AvatarWithState("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
+        AvatarWithStatus("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
     }
 }
 
@@ -110,11 +125,15 @@ fun CharacterItemPreview() {
 fun CharacterListPreview() {
     PickleAppTheme {
         CharacterList(
-            listOf(
-                CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+            CharactersListState(
+                listOf(
+                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                ),
+                null,
+                false
             )
         )
     }
