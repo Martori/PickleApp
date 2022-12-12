@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import cat.martori.pickleapp.R
 import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
@@ -31,7 +33,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CharacterList(viewModel: CharactersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
-    CharacterList(state) { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }
+    CharacterList(state, { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }, { viewModel.act(CharacterListAction.DismissError) })
 }
 
 data class CharactersListState(
@@ -40,12 +42,12 @@ data class CharactersListState(
     val loading: Boolean
 ) {
     companion object {
-        val DEFAULT = CharactersListState(emptyList(), null, true)
+        val DEFAULT = CharactersListState(emptyList(), Error("Sample"), true)
     }
 }
 
 @Composable
-fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit) {
+fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit, dismissError: () -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -66,8 +68,24 @@ fun CharacterList(state: CharactersListState, requestMoreCharacters: (currentAmo
                 Box(
                     Modifier
                         .fillMaxWidth()
-                        .padding(12.dp)) {
+                        .padding(12.dp)
+                ) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+            }
+        }
+    }
+    state.error?.let {
+        Dialog(onDismissRequest = { dismissError() }) {
+            Column(
+                Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.colors.background)
+                    .padding(12.dp)
+            ) {
+                Text(text = "Sorry an unexpected Error occurred", style = MaterialTheme.typography.h5)
+                TextButton(modifier = Modifier.align(Alignment.End), onClick = { dismissError() }) {
+                    Text(text = "OK")
                 }
             }
         }
@@ -147,7 +165,6 @@ fun CharacterListPreview() {
                 ),
                 null,
                 false
-            )
-        ) { }
+            ), { }, {})
     }
 }
