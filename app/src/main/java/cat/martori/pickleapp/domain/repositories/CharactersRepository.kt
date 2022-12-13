@@ -1,5 +1,6 @@
-package cat.martori.pickleapp.domain
+package cat.martori.pickleapp.domain.repositories
 
+import cat.martori.pickleapp.domain.entities.CharacterList
 import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {

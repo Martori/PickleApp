@@ -1,8 +1,10 @@
-package cat.martori.pickleapp.data
+package cat.martori.pickleapp.data.repositories
 
-import cat.martori.pickleapp.domain.CharacterList
-import cat.martori.pickleapp.domain.CharactersRepository
+import cat.martori.pickleapp.data.responses.CharactersResponse
+import cat.martori.pickleapp.data.services.CharacterApiService
+import cat.martori.pickleapp.domain.entities.CharacterList
 import cat.martori.pickleapp.domain.flatMap
+import cat.martori.pickleapp.domain.repositories.CharactersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 
 private const val NETWORK_PAGE_SIZE = 20

@@ -2,8 +2,8 @@ package cat.martori.pickleapp.ui.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import cat.martori.pickleapp.domain.GetCharactersListUseCase
-import cat.martori.pickleapp.domain.RequestCharactersListUseCase
+import cat.martori.pickleapp.domain.usecases.GetCharactersListUseCase
+import cat.martori.pickleapp.domain.usecases.RequestCharactersListUseCase
 import cat.martori.pickleapp.ui.composables.CharactersListState
 import kotlinx.coroutines.flow.*
 

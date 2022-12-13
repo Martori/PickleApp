@@ -1,8 +1,7 @@
-package cat.martori.pickleapp.data
+package cat.martori.pickleapp.data.responses
 
-import cat.martori.pickleapp.domain.*
-import retrofit2.http.GET
-import retrofit2.http.Query
+import cat.martori.pickleapp.domain.entities.CharacterSummary
+import cat.martori.pickleapp.domain.entities.Status
 
 data class CharactersResponse(
     val results: List<CharacterData>,
@@ -22,12 +21,4 @@ class CharacterData(
     fun toDomain() = CharacterSummary(
         name, species, image, status
     )
-}
-
-
-interface CharacterApiService {
-
-    @GET("/api/character")
-    suspend fun getAllCharacters(@Query("page") page: Int): Result<CharactersResponse>
-
 }

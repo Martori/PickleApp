@@ -1,4 +1,4 @@
-package cat.martori.pickleapp.domain
+package cat.martori.pickleapp.domain.entities
 
 data class CharacterList(
     val characters: List<CharacterSummary>,

@@ -22,7 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
-import cat.martori.pickleapp.domain.CharacterList
+import cat.martori.pickleapp.domain.entities.CharacterList
 import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.models.toCharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
@@ -43,7 +43,7 @@ data class CharactersListState(
     val loading: Boolean
 ) {
     companion object {
-        val DEFAULT = CharactersListState(emptyList(), Error("Sample"), true)
+        val DEFAULT = CharactersListState(emptyList(), null, true)
     }
 
     fun applyResult(result: Result<CharacterList>) = copy(

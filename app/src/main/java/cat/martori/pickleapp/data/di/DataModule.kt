@@ -1,8 +1,8 @@
 package cat.martori.pickleapp.data.di
 
-import cat.martori.pickleapp.data.CharacterApiService
-import cat.martori.pickleapp.data.RetrofitCharactersRepository
-import cat.martori.pickleapp.domain.CharactersRepository
+import cat.martori.pickleapp.data.repositories.RetrofitCharactersRepository
+import cat.martori.pickleapp.data.services.CharacterApiService
+import cat.martori.pickleapp.domain.repositories.CharactersRepository
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
