@@ -31,25 +31,28 @@ class CharactersListViewModel(
     private val navigator: Navigator<CharacterDestination>,
 ) : ViewModel() {
 
-    private val actions = MutableSharedFlow<CharacterListAction>(replay = 1).apply {
-        tryEmit(CharacterListAction.RequestMoreCharters(0))
-    }
+    private val _actions = MutableSharedFlow<CharacterListAction>()
+
+    private val actions = _actions
+        .onStart { emit(CharacterListAction.RequestMoreCharters(0)) }
+        .onEach { processAction(it) }
+        .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val state = getCharactersList()
         .runningFold(CharactersListState.DEFAULT, CharactersListState::applyResult)
-        .combine(actions.onEach(::processAction)) { state, action ->
+        .combine(actions) { state, action ->
             action.transformState(state)
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, CharactersListState.DEFAULT)
 
-    private suspend fun processAction(it: CharacterListAction) = when (it) {
-        is CharacterListAction.RequestMoreCharters -> requestCharacters(it.currentAmount)
-        is CharacterListAction.OpenCharacterDetails -> navigator.navigate(CharacterDestination.Details(it.model.id))
+    private suspend fun processAction(action: CharacterListAction) = when (action) {
+        is CharacterListAction.RequestMoreCharters -> requestCharacters(action.currentAmount)
+        is CharacterListAction.OpenCharacterDetails -> navigator.navigate(CharacterDestination.Details(action.model.id))
         else -> {}
     }
 
     fun act(action: CharacterListAction) = viewModelScope.launch {
-        actions.emit(action)
+        _actions.emit(action)
     }
 
 }

@@ -1,8 +1,10 @@
 package cat.martori.pickleapp.domain.usecases
 
-class GetCharacterDetailsUseCase {
-    suspend operator fun invoke() {
+import cat.martori.pickleapp.domain.repositories.CharactersRepository
 
-    }
+class GetCharacterDetailsUseCase(
+    private val charactersRepository: CharactersRepository
+) {
+    operator fun invoke(id: Int) = charactersRepository.getCharacter(id)
 
 }

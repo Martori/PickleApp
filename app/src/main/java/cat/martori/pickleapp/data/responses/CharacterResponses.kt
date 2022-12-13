@@ -1,5 +1,6 @@
 package cat.martori.pickleapp.data.responses
 
+import cat.martori.pickleapp.domain.entities.CharacterDetails
 import cat.martori.pickleapp.domain.entities.CharacterSummary
 import cat.martori.pickleapp.domain.entities.Status
 
@@ -19,7 +20,11 @@ class CharacterData(
     val image: String,
     val status: Status
 ) {
-    fun toDomain() = CharacterSummary(
+    fun toCharacterSummary() = CharacterSummary(
         id, name, species, image, status
+    )
+
+    fun toCharacterDetails() = CharacterDetails(
+        id, name,
     )
 }
