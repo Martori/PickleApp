@@ -21,7 +21,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import cat.martori.pickleapp.R
 import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
@@ -85,24 +84,6 @@ fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (curr
             ErrorDialog(stringResource(R.string.defaultErrorMessage), dismissError)
         }
 
-    }
-}
-
-@Composable
-private fun ErrorDialog(errorMessage: String, dismissError: () -> Unit) {
-    Dialog(onDismissRequest = { dismissError() }) {
-        Column(
-            Modifier
-                .clip(MaterialTheme.shapes.medium)
-                .background(MaterialTheme.colors.background)
-                .padding(12.dp)
-        ) {
-            Text(text = stringResource(R.string.defaultErrorMessageTitle), style = MaterialTheme.typography.h6)
-            Text(text = errorMessage, style = MaterialTheme.typography.body1)
-            TextButton(modifier = Modifier.align(Alignment.End), onClick = { dismissError() }) {
-                Text(text = stringResource(R.string.acceptButton))
-            }
-        }
     }
 }
 
