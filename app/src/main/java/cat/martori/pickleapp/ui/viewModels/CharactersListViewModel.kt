@@ -9,6 +9,7 @@ import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.navigation.Navigator
 import cat.martori.pickleapp.ui.navigation.destinations.CharacterDestination
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 sealed interface CharacterListAction {
 
@@ -30,7 +31,9 @@ class CharactersListViewModel(
     private val navigator: Navigator<CharacterDestination>,
 ) : ViewModel() {
 
-    private val actions = MutableStateFlow<CharacterListAction>(CharacterListAction.RequestMoreCharters(0))
+    private val actions = MutableSharedFlow<CharacterListAction>(replay = 1).apply {
+        tryEmit(CharacterListAction.RequestMoreCharters(0))
+    }
 
     val state = getCharactersList()
         .runningFold(CharactersListState.DEFAULT, CharactersListState::applyResult)
@@ -45,8 +48,8 @@ class CharactersListViewModel(
         else -> {}
     }
 
-    fun act(action: CharacterListAction) {
-        actions.value = action
+    fun act(action: CharacterListAction) = viewModelScope.launch {
+        actions.emit(action)
     }
 
 }

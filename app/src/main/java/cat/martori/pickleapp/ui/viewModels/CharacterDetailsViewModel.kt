@@ -18,6 +18,7 @@ class CharacterDetailsViewModel(
 ) : ViewModel() {
 
 
+
     fun act(action: CharacterDetailsAction) {
         when (action) {
             CharacterDetailsAction.GoBack -> navigator.backTo()
