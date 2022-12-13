@@ -1,8 +1,12 @@
 package cat.martori.pickleapp.ui.navigation.navGraphs
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import cat.martori.pickleapp.ui.composables.CharacterDetailsScreen
 import cat.martori.pickleapp.ui.composables.CharacterListScreen
 import cat.martori.pickleapp.ui.navigation.AnimatedNavHost
@@ -21,7 +25,13 @@ fun MainNavGraph(navigator: Navigator<CharacterDestination> = get(named<Characte
     BackHandler {
         navigator.backTo()
     }
-    AnimatedNavHost(navController, CharacterDestination.List) {
+    AnimatedNavHost(
+        navController, CharacterDestination.List, Modifier.fillMaxSize(),
+        enterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+        exitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Left, animationSpec = tween(700)) },
+        popEnterTransition = { slideIntoContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) },
+        popExitTransition = { slideOutOfContainer(AnimatedContentScope.SlideDirection.Right, animationSpec = tween(700)) },
+    ) {
         composable(CharacterDestination.List) {
             BackHandler {
                 close()

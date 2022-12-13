@@ -58,11 +58,13 @@ data class CharactersListState(
 
 @Composable
 fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit, dismissError: () -> Unit, openCharacterDetails: (CharacterItemModel) -> Unit) {
-    Scaffold(topBar = {
-        TopAppBar {
-            Image(modifier = Modifier.padding(8.dp), painter = painterResource(R.drawable.main_logo), contentDescription = stringResource(R.string.mainLogoDescription))
-        }
-    }) {
+    Scaffold(
+        Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar {
+                Image(modifier = Modifier.padding(8.dp), painter = painterResource(R.drawable.main_logo), contentDescription = stringResource(R.string.mainLogoDescription))
+            }
+        }) {
         LazyColumn(
             contentPadding = PaddingValues(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),

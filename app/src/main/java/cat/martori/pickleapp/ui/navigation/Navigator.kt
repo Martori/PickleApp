@@ -1,14 +1,10 @@
 package cat.martori.pickleapp.ui.navigation
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -16,11 +12,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlin.reflect.KClass
+import kotlinx.coroutines.flow.*
 
 
 interface ComposeRoute {
@@ -40,7 +32,7 @@ sealed class ComposeAction<T : ComposeDestination> {
 interface Navigator<T : ComposeDestination> {
     fun navigate(navAction: T)
     fun backTo(destination: T? = null)
-    val navActions: StateFlow<ComposeAction<T>?>
+    val navActions: Flow<ComposeAction<T>?>
     fun onNavigated()
 }
 
@@ -85,7 +77,6 @@ fun <T> lifecycleAwareState(
 fun <T : ComposeDestination> Navigator<T>.rememberNavHostController(): NavHostController {
     val navigatorState by navActions.asLifecycleAwareState(lifecycleOwner = LocalLifecycleOwner.current, initialState = null)
     val navController = rememberAnimatedNavController()
-    val context = LocalContext.current
     LaunchedEffect(navigatorState) {
         when (val state = navigatorState) {
             is ComposeAction.BackTo -> state.destination?.route?.let { navController.popBackStack(it, false) } ?: navController.navigateUp()
@@ -96,10 +87,6 @@ fun <T : ComposeDestination> Navigator<T>.rememberNavHostController(): NavHostCo
     }
 
     return navController
-}
-
-private fun <A : Activity> Context.startActivity(kClass: KClass<out A>, setup: Intent.() -> Unit) {
-    startActivity(Intent(this, kClass.java).apply(setup))
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -119,15 +106,6 @@ fun AnimatedNavHost(
     builder: NavGraphBuilder.() -> Unit,
 ) = com.google.accompanist.navigation.animation.AnimatedNavHost(navController, startDestination.route, modifier, contentAlignment, route, enterTransition, exitTransition, popEnterTransition, popExitTransition, builder)
 
-@Composable
-fun NavHost(
-    navController: NavHostController,
-    startDestination: ComposeRoute,
-    modifier: Modifier = Modifier,
-    route: String? = null,
-    builder: NavGraphBuilder.() -> Unit,
-) = androidx.navigation.compose.NavHost(navController, startDestination.route, modifier, route, builder)
-
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composable(
     destination: ComposeRoute,
@@ -143,9 +121,3 @@ fun NavGraphBuilder.composable(
     )? = exitTransition,
     content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit,
 ) = composable(destination.route, arguments, deepLinks, enterTransition, exitTransition, popEnterTransition, popExitTransition, content)
-
-inline fun NavGraphBuilder.navigation(
-    startDestination: ComposeDestination,
-    route: ComposeDestination,
-    builder: NavGraphBuilder.() -> Unit,
-) = navigation(startDestination.destination, route.route, builder)

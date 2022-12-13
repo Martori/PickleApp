@@ -42,17 +42,19 @@ fun CharacterDetailsScreen(id: Int, viewModel: CharacterDetailsViewModel = koinV
 
 @Composable
 private fun CharacterDetailsScreen(state: CharacterDetailsState, goBack: () -> Unit) {
-    state.details?.let { character ->
-        Scaffold(
-            topBar = {
-                TopAppBar {
-                    IconButton(onClick = { goBack() }) {
-                        Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.goBackDescription))
-                    }
+    Scaffold(
+        topBar = {
+            TopAppBar {
+                IconButton(onClick = { goBack() }) {
+                    Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.goBackDescription))
+                }
+                state.details?.let { character ->
                     Text(character.name)
                 }
             }
-        ) {
+        }
+    ) {
+        state.details?.let { character ->
             Box(Modifier.padding(it)) {
                 Text("Character id = ${character.id}")
             }
