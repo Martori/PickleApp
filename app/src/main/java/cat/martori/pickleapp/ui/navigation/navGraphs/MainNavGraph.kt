@@ -2,8 +2,8 @@ package cat.martori.pickleapp.ui.navigation.navGraphs
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import cat.martori.pickleapp.ui.composables.CharacterDetailsScreen
 import cat.martori.pickleapp.ui.composables.CharacterListScreen
 import cat.martori.pickleapp.ui.navigation.AnimatedNavHost
 import cat.martori.pickleapp.ui.navigation.Navigator
@@ -29,8 +29,8 @@ fun MainNavGraph(navigator: Navigator<CharacterDestination> = get(named<Characte
             CharacterListScreen()
         }
         composable(CharacterDestination.Details) { destination ->
-            val id = destination.arguments?.getString(CharacterDestination.Details.characterIdArg)?.toInt()
-            Text("Character id = $id")
+            val id = destination.arguments?.getString(CharacterDestination.Details.characterIdArg)?.toInt() ?: error("Mandatory Character id is missing")
+            CharacterDetailsScreen(id)
         }
     }
 

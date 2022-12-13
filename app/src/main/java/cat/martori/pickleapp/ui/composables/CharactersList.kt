@@ -68,7 +68,6 @@ fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (curr
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier
                 .padding(it)
-                .background(MaterialTheme.colors.background)
                 .fillMaxSize()
         ) {
             itemsIndexed(state.characters) { index, item ->

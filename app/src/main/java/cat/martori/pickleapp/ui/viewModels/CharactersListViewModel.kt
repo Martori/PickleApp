@@ -14,8 +14,6 @@ sealed interface CharacterListAction {
 
     fun transformState(state: CharactersListState): CharactersListState = state
 
-    object NoOp : CharacterListAction
-
     object DismissError : CharacterListAction {
         override fun transformState(state: CharactersListState) = state.copy(error = null)
     }
