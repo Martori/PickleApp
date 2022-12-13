@@ -5,13 +5,16 @@ import cat.martori.pickleapp.domain.entities.CharacterSummary
 import cat.martori.pickleapp.domain.entities.Status
 
 data class CharacterItemModel(
+    val id: Int,
     val name: String,
     val species: String,
     val avatarUrl: String,
     val statusColor: Color,
-)
+) {
+}
 
 fun CharacterSummary.toCharacterItemModel() = CharacterItemModel(
+    id,
     name,
     species,
     imageUrl,

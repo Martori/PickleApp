@@ -13,12 +13,13 @@ data class PaginationInfo(
 )
 
 class CharacterData(
+    val id: Int,
     val name: String,
     val species: String,
     val image: String,
     val status: Status
 ) {
     fun toDomain() = CharacterSummary(
-        name, species, image, status
+        id, name, species, image, status
     )
 }

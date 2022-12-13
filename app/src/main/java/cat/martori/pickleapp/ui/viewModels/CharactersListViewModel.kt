@@ -5,6 +5,9 @@ import androidx.lifecycle.viewModelScope
 import cat.martori.pickleapp.domain.usecases.GetCharactersListUseCase
 import cat.martori.pickleapp.domain.usecases.RequestCharactersListUseCase
 import cat.martori.pickleapp.ui.composables.CharactersListState
+import cat.martori.pickleapp.ui.models.CharacterItemModel
+import cat.martori.pickleapp.ui.navigation.Navigator
+import cat.martori.pickleapp.ui.navigation.destinations.CharacterDestination
 import kotlinx.coroutines.flow.*
 
 sealed interface CharacterListAction {
@@ -19,11 +22,14 @@ sealed interface CharacterListAction {
 
     data class RequestMoreCharters(val currentAmount: Int) : CharacterListAction
 
+    data class OpenCharacterDetails(val model: CharacterItemModel) : CharacterListAction
+
 }
 
 class CharactersListViewModel(
     getCharactersList: GetCharactersListUseCase,
     private val requestCharacters: RequestCharactersListUseCase,
+    private val navigator: Navigator<CharacterDestination>,
 ) : ViewModel() {
 
     private val actions = MutableStateFlow<CharacterListAction>(CharacterListAction.RequestMoreCharters(0))
@@ -37,6 +43,7 @@ class CharactersListViewModel(
 
     private suspend fun processAction(it: CharacterListAction) = when (it) {
         is CharacterListAction.RequestMoreCharters -> requestCharacters(it.currentAmount)
+        is CharacterListAction.OpenCharacterDetails -> navigator.navigate(CharacterDestination.Details(it.model.id))
         else -> {}
     }
 

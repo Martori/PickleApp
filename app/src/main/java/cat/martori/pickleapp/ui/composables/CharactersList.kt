@@ -34,7 +34,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CharacterListScreen(viewModel: CharactersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
-    CharacterListScreen(state, { viewModel.act(CharacterListAction.RequestMoreCharters(it)) }, { viewModel.act(CharacterListAction.DismissError) }, {})
+    CharacterListScreen(state,
+        { viewModel.act(CharacterListAction.RequestMoreCharters(it)) },
+        { viewModel.act(CharacterListAction.DismissError) },
+        { viewModel.act(CharacterListAction.OpenCharacterDetails(it)) })
 }
 
 data class CharactersListState(
@@ -149,7 +152,7 @@ fun AvatarWithStatePreview() {
 fun CharacterItemPreview() {
     PickleAppTheme {
         CharacterItem(
-            CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
+            CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
         ) { }
     }
 }
@@ -161,10 +164,10 @@ fun CharacterListPreview() {
         CharacterListScreen(
             CharactersListState(
                 listOf(
-                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel("Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
                 ),
                 null,
                 false

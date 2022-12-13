@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 class CharacterSummary(
+    val id: Int,
     val name: String,
     val species: String,
     val imageUrl: String,
