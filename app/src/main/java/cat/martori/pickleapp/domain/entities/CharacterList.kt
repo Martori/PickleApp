@@ -6,4 +6,8 @@ data class CharacterList(
 ) {
     private val currentAmount = characters.size
     val isComplete = currentAmount == totalAmount
+
+    companion object {
+        val EMPTY = CharacterList(emptyList(), 0)
+    }
 }
