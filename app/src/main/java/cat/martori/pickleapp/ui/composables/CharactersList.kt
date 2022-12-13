@@ -22,7 +22,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
+import cat.martori.pickleapp.domain.CharacterList
 import cat.martori.pickleapp.ui.models.CharacterItemModel
+import cat.martori.pickleapp.ui.models.toCharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
 import cat.martori.pickleapp.ui.viewModels.CharacterListAction
 import cat.martori.pickleapp.ui.viewModels.CharactersListViewModel
@@ -43,6 +45,12 @@ data class CharactersListState(
     companion object {
         val DEFAULT = CharactersListState(emptyList(), Error("Sample"), true)
     }
+
+    fun applyResult(result: Result<CharacterList>) = copy(
+        characters = result.map { it.characters.toCharacterItemModel() }.getOrElse { characters },
+        error = result.exceptionOrNull(),
+        loading = result.map { !it.isComplete }.getOrElse { true }
+    )
 }
 
 @Composable

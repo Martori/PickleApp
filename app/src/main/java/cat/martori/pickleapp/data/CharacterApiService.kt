@@ -5,7 +5,12 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 data class CharactersResponse(
-    val results: List<CharacterData>
+    val results: List<CharacterData>,
+    val info: PaginationInfo,
+)
+
+data class PaginationInfo(
+    val count: Int,
 )
 
 class CharacterData(
