@@ -54,7 +54,7 @@ private fun CharacterDetailsScreen(state: CharacterDetailsState, sendAction: (Ch
             DetailsBody(character, Modifier.padding(paddings))
         }
         state.error?.let {
-            ErrorBody(Modifier.padding(paddings))
+            ErrorBody(sendAction)
         }
         if (state.loading) {
             LoadingBody(Modifier.padding(paddings))
@@ -70,8 +70,10 @@ private fun LoadingBody(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ErrorBody(modifier: Modifier = Modifier) {
-    Text("Error message")
+private fun ErrorBody(sendAction: (CharacterDetailsAction) -> Unit) {
+    ErrorDialog(stringResource(R.string.defaultErrorMessage)) {
+        sendAction(CharacterDetailsAction.GoBack)
+    }
 }
 
 @Composable
