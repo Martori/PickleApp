@@ -6,6 +6,7 @@ import cat.martori.pickleapp.domain.entities.Status
 data class CharacterDetailsModel(
     val id: Int,
     val name: String,
+    val imageUrl: String,
     val status: Status,
     val species: String,
     val gender: String,
@@ -17,6 +18,7 @@ data class CharacterDetailsModel(
 fun CharacterDetails.toDetailsModel() = CharacterDetailsModel(
     id,
     name,
+    imageUrl,
     status,
     species + type?.let { " - $it" }.orEmpty(),
     gender,

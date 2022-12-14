@@ -6,5 +6,8 @@
     <string name="acceptButton">OK</string>
     <string name="mainLogoDescription">Rick and Morty logo</string>
     <string name="goBackDescription">Go back</string>
+    <string name="FromOrigin">Is from:</string>
+    <string name="LastSeen">Last seen on:</string>
+    <string name="FirstEpisode">We met them in the episode:</string>
 
 </resources>

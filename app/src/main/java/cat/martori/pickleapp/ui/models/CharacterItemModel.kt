@@ -1,6 +1,5 @@
 package cat.martori.pickleapp.ui.models
 
-import androidx.compose.ui.graphics.Color
 import cat.martori.pickleapp.domain.entities.CharacterSummary
 import cat.martori.pickleapp.domain.entities.Status
 
@@ -9,7 +8,7 @@ data class CharacterItemModel(
     val name: String,
     val species: String,
     val avatarUrl: String,
-    val statusColor: Color,
+    val status: Status,
 ) {
 }
 
@@ -18,11 +17,7 @@ fun CharacterSummary.toCharacterItemModel() = CharacterItemModel(
     name,
     species,
     imageUrl,
-    when (status) {
-        Status.Alive -> Color.Green
-        Status.Dead -> Color.Red
-        Status.Unknown -> Color.LightGray
-    }
+    status
 )
 
 fun List<CharacterSummary>.toCharacterItemModel() = map { it.toCharacterItemModel() }

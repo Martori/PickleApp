@@ -1,7 +1,6 @@
 package cat.martori.pickleapp.ui.composables
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,13 +15,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cat.martori.pickleapp.R
 import cat.martori.pickleapp.domain.entities.CharacterList
+import cat.martori.pickleapp.domain.entities.Status
 import cat.martori.pickleapp.ui.models.CharacterItemModel
 import cat.martori.pickleapp.ui.models.toCharacterItemModel
 import cat.martori.pickleapp.ui.theme.PickleAppTheme
@@ -125,7 +124,7 @@ private fun CharacterItem(model: CharacterItemModel, onClick: () -> Unit) {
                 .fillMaxWidth()
                 .padding(12.dp),
         ) {
-            AvatarWithState(model.avatarUrl, model.statusColor)
+            AvatarWithStatus(model.avatarUrl, model.status)
             Spacer(modifier = Modifier.size(12.dp))
             Column {
                 Text(model.name, color = MaterialTheme.colors.onSurface, style = MaterialTheme.typography.h6)
@@ -136,7 +135,7 @@ private fun CharacterItem(model: CharacterItemModel, onClick: () -> Unit) {
 }
 
 @Composable
-private fun AvatarWithState(imageUrl: String, statusColor: Color) {
+private fun AvatarWithStatus(imageUrl: String, statusColor: Status) {
     Box {
         AsyncImage(
             imageUrl,
@@ -147,13 +146,7 @@ private fun AvatarWithState(imageUrl: String, statusColor: Color) {
             placeholder = painterResource(id = R.drawable.avatar_placeholder),
             error = painterResource(id = R.drawable.avatar_placeholder)
         )
-        Box(
-            modifier = Modifier
-                .size(8.dp)
-                .clip(CircleShape)
-                .background(statusColor)
-                .align(BiasAlignment(0.85f, 0.85f))
-        )
+        StatusCircle(statusColor, Modifier.align(BiasAlignment(0.85f, 0.85f)))
     }
 }
 
@@ -161,7 +154,7 @@ private fun AvatarWithState(imageUrl: String, statusColor: Color) {
 @Composable
 fun AvatarWithStatePreview() {
     PickleAppTheme {
-        AvatarWithState("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
+        AvatarWithStatus("https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive)
     }
 }
 
@@ -170,7 +163,7 @@ fun AvatarWithStatePreview() {
 fun CharacterItemPreview() {
     PickleAppTheme {
         CharacterItem(
-            CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red)
+            CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive)
         ) { }
     }
 }
@@ -182,10 +175,10 @@ fun CharacterListPreview() {
         CharacterListBody(
             CharactersListState(
                 listOf(
-                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
-                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive),
+                    CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Status.Alive),
                 ),
                 null,
                 false

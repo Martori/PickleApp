@@ -3,6 +3,7 @@ package cat.martori.pickleapp.domain.entities
 data class CharacterDetails(
     val id: Int,
     val name: String,
+    val imageUrl: String,
     val status: Status,
     val species: String,
     val type: String?,
@@ -14,6 +15,7 @@ data class CharacterDetails(
     constructor(summary: CharacterSummary, origin: Location?, currentLocation: Location?, firstEpisode: Episode?) : this(
         summary.id,
         summary.name,
+        summary.imageUrl,
         summary.status,
         summary.species,
         summary.type,
