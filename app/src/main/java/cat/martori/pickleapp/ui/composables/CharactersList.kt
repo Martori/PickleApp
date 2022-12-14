@@ -34,10 +34,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CharacterListScreen(viewModel: CharactersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
-    CharacterListScreen(state,
-        { viewModel.act(CharacterListAction.RequestMoreCharters(it)) },
-        { viewModel.act(CharacterListAction.DismissError) },
-        { viewModel.act(CharacterListAction.OpenCharacterDetails(it)) })
+    CharacterListScreen(state) { viewModel.act(it) }
 }
 
 data class CharactersListState(
@@ -57,45 +54,65 @@ data class CharactersListState(
 }
 
 @Composable
-fun CharacterListScreen(state: CharactersListState, requestMoreCharacters: (currentAmount: Int) -> Unit, dismissError: () -> Unit, openCharacterDetails: (CharacterItemModel) -> Unit) {
+fun CharacterListScreen(state: CharactersListState, sendAction: (CharacterListAction) -> Unit) {
     Scaffold(
         Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar {
-                Image(modifier = Modifier.padding(8.dp), painter = painterResource(R.drawable.main_logo), contentDescription = stringResource(R.string.mainLogoDescription))
-            }
-        }) {
-        LazyColumn(
-            contentPadding = PaddingValues(12.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-            itemsIndexed(state.characters) { index, item ->
-                if (index == state.characters.lastIndex && state.loading) {
-                    LaunchedEffect(state, index) {
-                        requestMoreCharacters(state.characters.size)
-                    }
-                }
-                CharacterItem(item) { openCharacterDetails(item) }
-            }
-            if (state.loading) {
-                item {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(12.dp)
-                    ) {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                    }
-                }
-            }
-        }
+        topBar = { CharacterListAppBar() }
+    ) {
+
+        CharacterListBody(state, Modifier.padding(it), sendAction)
+
         state.error?.let {
-            ErrorDialog(stringResource(R.string.defaultErrorMessage), dismissError)
+            ErrorDialog(stringResource(R.string.defaultErrorMessage)) {
+                sendAction(CharacterListAction.DismissError)
+            }
         }
 
+    }
+}
+
+@Composable
+private fun CharacterListBody(
+    state: CharactersListState,
+    modifier: Modifier = Modifier,
+    sendAction: (CharacterListAction) -> Unit
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.fillMaxSize()
+    ) {
+        itemsIndexed(state.characters) { index, item ->
+            if (index == state.characters.lastIndex && state.loading) {
+                LaunchedEffect(state, index) {
+                    sendAction(CharacterListAction.RequestMoreCharters(state.characters.size))
+                }
+            }
+            CharacterItem(item) { sendAction(CharacterListAction.OpenCharacterDetails(item)) }
+        }
+        if (state.loading) {
+            item {
+                ListLoadingIndicator()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ListLoadingIndicator() {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+    ) {
+        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+    }
+}
+
+@Composable
+private fun CharacterListAppBar() {
+    TopAppBar {
+        Image(modifier = Modifier.padding(8.dp), painter = painterResource(R.drawable.main_logo), contentDescription = stringResource(R.string.mainLogoDescription))
     }
 }
 
@@ -162,7 +179,7 @@ fun CharacterItemPreview() {
 @Composable
 fun CharacterListPreview() {
     PickleAppTheme {
-        CharacterListScreen(
+        CharacterListBody(
             CharactersListState(
                 listOf(
                     CharacterItemModel(1, "Chris", "Alien", "https://rickandmortyapi.com/api/character/avatar/64.jpeg", Color.Red),
@@ -172,6 +189,7 @@ fun CharacterListPreview() {
                 ),
                 null,
                 false
-            ), { }, {}, {})
+            )
+        ) { }
     }
 }
