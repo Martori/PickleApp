@@ -4,6 +4,8 @@ import cat.martori.pickleapp.data.repositories.RetrofitCharactersRepository
 import cat.martori.pickleapp.data.repositories.RetrofitEpisodeRepository
 import cat.martori.pickleapp.data.repositories.RetrofitLocationRepository
 import cat.martori.pickleapp.data.services.CharacterApiService
+import cat.martori.pickleapp.data.services.EpisodeApiService
+import cat.martori.pickleapp.data.services.LocationApiService
 import cat.martori.pickleapp.domain.repositories.CharactersRepository
 import cat.martori.pickleapp.domain.repositories.EpisodeRepository
 import cat.martori.pickleapp.domain.repositories.LocationRepository
@@ -35,6 +37,12 @@ val dataModule = module {
 
     single {
         get<Retrofit>().create<CharacterApiService>()
+    }
+    single {
+        get<Retrofit>().create<EpisodeApiService>()
+    }
+    single {
+        get<Retrofit>().create<LocationApiService>()
     }
 
 }
