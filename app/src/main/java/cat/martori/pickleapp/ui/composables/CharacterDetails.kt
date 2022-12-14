@@ -34,18 +34,16 @@ data class CharacterDetailsState(
 @Composable
 fun CharacterDetailsScreen(id: Int, viewModel: CharacterDetailsViewModel = koinViewModel { parametersOf(id) }) {
     val state by viewModel.state.collectAsState()
-    CharacterDetailsScreen(state,
-        { viewModel.act(CharacterDetailsAction.GoBack) }
-    )
+    CharacterDetailsScreen(state) { viewModel.act(it) }
 
 }
 
 @Composable
-private fun CharacterDetailsScreen(state: CharacterDetailsState, goBack: () -> Unit) {
+private fun CharacterDetailsScreen(state: CharacterDetailsState, sendAction: (CharacterDetailsAction) -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar {
-                IconButton(onClick = { goBack() }) {
+                IconButton(onClick = { sendAction(CharacterDetailsAction.GoBack) }) {
                     Icon(painter = painterResource(R.drawable.ic_arrow_back), contentDescription = stringResource(R.string.goBackDescription))
                 }
                 state.details?.let { character ->
