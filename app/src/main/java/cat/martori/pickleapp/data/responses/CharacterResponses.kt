@@ -1,7 +1,7 @@
 package cat.martori.pickleapp.data.responses
 
-import cat.martori.pickleapp.domain.entities.CharacterDetails
 import cat.martori.pickleapp.domain.entities.CharacterSummary
+import cat.martori.pickleapp.domain.entities.EpisodeSummary
 import cat.martori.pickleapp.domain.entities.Status
 
 data class CharactersResponse(
@@ -17,14 +17,27 @@ class CharacterData(
     val id: Int,
     val name: String,
     val species: String,
+    val type: String,
     val image: String,
-    val status: Status
+    val status: Status,
+    val gender: String,
+    val origin: EmbeddedLocationResponse,
+    val location: EmbeddedLocationResponse,
+    val episode: List<String>
 ) {
-    fun toCharacterSummary() = CharacterSummary(
-        id, name, species, image, status
-    )
-
-    fun toCharacterDetails() = CharacterDetails(
-        id, name,
-    )
+    fun toCharacterSummary() = with(IdExtracter) {
+        CharacterSummary(
+            id,
+            name,
+            image,
+            status,
+            species,
+            type.takeIf { it.isNotEmpty() },
+            gender,
+            origin.toLocationSummary(),
+            location.toLocationSummary(),
+            episode.first().let { EpisodeSummary(it.extractId(), it) }
+        )
+    }
 }
+

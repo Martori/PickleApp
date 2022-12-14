@@ -37,7 +37,7 @@ class CharacterDetailsViewModel(
         .combine(actions) { state, action ->
             action.transformState(state)
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, CharacterDetailsState.DEFAULT)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(500), CharacterDetailsState.DEFAULT)
 
     private fun processAction(action: CharacterDetailsAction) = when (action) {
         CharacterDetailsAction.GoBack -> navigator.backTo()

@@ -2,6 +2,7 @@ package cat.martori.pickleapp.data.repositories
 
 import cat.martori.pickleapp.data.responses.CharacterData
 import cat.martori.pickleapp.data.responses.CharactersResponse
+import cat.martori.pickleapp.data.responses.EmbeddedLocationResponse
 import cat.martori.pickleapp.data.responses.PaginationInfo
 import cat.martori.pickleapp.data.services.CharacterApiService
 import cat.martori.pickleapp.domain.entities.CharacterList
@@ -10,7 +11,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertContentEquals
@@ -26,7 +26,8 @@ class RetrofitCharactersRepositoryTest {
 
     private val sut = RetrofitCharactersRepository(characterApiService)
 
-    private val testCharacterData = CharacterData(0, "test", "human", "fakeUrl", Status.Alive)
+    private val testLocation = EmbeddedLocationResponse("Earth", "fakeUrl/1")
+    private val testCharacterData = CharacterData(0, "test", "human", "", "fakeUrl", Status.Alive, "Male", testLocation, testLocation, listOf("fakeEpisode/1"))
     private val successfulListResponse = CharactersResponse(
         listOf(testCharacterData),
         PaginationInfo(1)
@@ -87,7 +88,7 @@ class RetrofitCharactersRepositoryTest {
     @Test
     fun `get character details should return failure if the request fails`() = runTest {
 
-        val result = sut.getCharacter(1).last()
+        val result = sut.getCharacter(1)
 
         assert(result.isFailure)
     }
@@ -96,9 +97,9 @@ class RetrofitCharactersRepositoryTest {
     fun `get character details should return the same character as the service`() = runTest {
         coEvery { characterApiService.getCharactersDetails(any()) } returns Result.success(testCharacterData)
 
-        val result = sut.getCharacter(1).last()
+        val result = sut.getCharacter(1)
 
         assert(result.isSuccess)
-        assertEquals(testCharacterData.toCharacterDetails(), result.getOrThrow())
+        assertEquals(testCharacterData.toCharacterSummary(), result.getOrThrow())
     }
 }

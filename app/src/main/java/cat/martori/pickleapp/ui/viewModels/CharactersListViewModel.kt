@@ -43,7 +43,7 @@ class CharactersListViewModel(
         .combine(actions) { state, action ->
             action.transformState(state)
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, CharactersListState.DEFAULT)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(500), CharactersListState.DEFAULT)
 
     private suspend fun processAction(action: CharacterListAction) = when (action) {
         is CharacterListAction.RequestMoreCharters -> requestCharacters(action.currentAmount)

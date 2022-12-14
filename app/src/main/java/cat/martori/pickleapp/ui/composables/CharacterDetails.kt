@@ -54,7 +54,9 @@ private fun CharacterDetailsScreen(state: CharacterDetailsState, sendAction: (Ch
     ) {
         state.details?.let { character ->
             Box(Modifier.padding(it)) {
-                Text("Character id = ${character.id}")
+                Text(
+                    character.toString()
+                )
             }
         }
     }

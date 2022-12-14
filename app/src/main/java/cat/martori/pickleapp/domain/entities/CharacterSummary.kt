@@ -6,9 +6,14 @@ import com.google.gson.annotations.SerializedName
 data class CharacterSummary(
     val id: Int,
     val name: String,
-    val species: String,
     val imageUrl: String,
-    val status: Status
+    val status: Status,
+    val species: String,
+    val type: String?,
+    val gender: String,
+    val origin: LocationSummary,
+    val currentLocation: LocationSummary,
+    val firstEpisode: EpisodeSummary,
 )
 
 enum class Status {
