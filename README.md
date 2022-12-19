@@ -14,7 +14,7 @@ This project uses:
 This project uses some external dependencies. Most are standard in the industry, some are major libraries:
 - **Coil:** for image display
 - **Koin:** for dependency injection
-- **Retrofit:**, Retrofit converters and OKHttp:++ for network requests
+- **Retrofit, Retrofit converters and OKHttp:** for network requests
 - **mockk:** for Mocking in the tests
 
 ## Test
